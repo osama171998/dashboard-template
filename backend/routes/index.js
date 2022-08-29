@@ -6,6 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get("/get-user",UserController.AddUser);
+router.post("/add-user",UserController.AddUser);
+router.get("/verify-user",UserController.VerifyUser);
 
 module.exports = router;
