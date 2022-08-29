@@ -12,7 +12,9 @@ const UserSchema = new mongose.Schema({
     },
     cnic:{
         type:String,
-        required:true
+        required:true,
+        unique:true,
+        dropDups:true
     },
     contactNo:{
         type:Number,
