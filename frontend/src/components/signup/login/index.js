@@ -1,8 +1,21 @@
-import {useRef} from "react"
+import {useRef,useState} from "react"
 import {Input,FieldHolder, FormHolder, Button} from "../style"
+import {UseFetch} from "../../../Hooks/index"
+import { API_URL } from "../../../constants"
 const Login = () =>{
     const email = useRef("")
     const password = useRef("")
+    const [triggerApi,setTriggerApi] = useState(false)
+    const [requestData,setRequestData] = useState({
+        route:null,
+        method:null,
+        header:null,
+        body:null
+    })
+
+    const {response,loading,error} = UseFetch(requestData,triggerApi)
+
+    console.log(response,loading,error)
 
     const handleLoginRequest = (e) =>{
         e.preventDefault()
@@ -10,7 +23,16 @@ const Login = () =>{
             email:email.current.value,
             password:password.current.value
         }
-        console.log(loginPayload)
+        setRequestData({
+            route:`${API_URL}/login`,
+            method:"POST",
+            headers:{
+                "accept":"application/json",
+                "content-type":"application/json"
+            },
+            body:JSON.stringify(loginPayload)
+        })
+        setTriggerApi(true)
     }
     return <FormHolder onSubmit={handleLoginRequest}>
         <FieldHolder>

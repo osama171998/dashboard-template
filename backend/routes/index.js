@@ -7,6 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post("/add-user",UserController.AddUser);
+router.post("/login",UserController.login);
 router.get("/verify-user",UserController.VerifyUser);
+
 
 module.exports = router;

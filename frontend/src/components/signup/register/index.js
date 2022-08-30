@@ -1,6 +1,7 @@
-import React,{useRef,useState} from "react"
+import React,{useEffect, useRef,useState} from "react"
 import {FormHolder,FieldHolder,Input,TextArea,Button} from "../style"
-import {UseFetch} from "../../../Hooks/index"
+import UseFetch from "../../../Hooks/useFetch"
+import { API_URL } from "../../../constants"
 const Register = () =>{
     const firstName = useRef("");
     const lastName = useRef("");
@@ -12,20 +13,17 @@ const Register = () =>{
     const confirmPassword = useRef("");
      
     const [passwordMatch,confirmPasswordMatch] = useState(false)
-    
-    
-    // const result = UseFetch("/add-user","POST",{ accept: "application/json", "content-type": "application/json" },JSON.stringify({
-    //     firstName:"Osama",
-    //     lastName:"Idrees",
-    //     cnic:"1330217021683",
-    //     contactNo:"03367974343",
-    //     address:"House no 1597, Mohalah Malik Pura, Haripur",
-    //     email:"rockharipur@gmail.com",
-    //     password:"Osam@12345"
+    const [requestData,setRequestData] = useState({
+        route:null,
+        method:null,
+        header:null,
+        body:null
+    })
+    const [triggerApi,setTriggerApi] = useState(false)
 
-        
-    // }))
-    // console.log(result)
+    const {response,loading,error} = UseFetch(requestData,triggerApi)
+    console.log(response,loading,error)
+
          
          
     const submitForm = (e) =>{
@@ -40,9 +38,17 @@ const Register = () =>{
                 email:email.current.value,
                 password:password.current.value
             }
-    
-            const result = UseFetch("/add-user","POST",{ accept: "application/json", "content-type": "application/json" },JSON.stringify(requestBody))
-            console.log(result)
+            setRequestData({
+                route:`${API_URL}/add-user`,
+                method:"POST",
+                headers:{
+                    "accept":"application/json",
+                    "content-type":"application/json"
+                },
+                body:JSON.stringify(requestBody)
+            })
+            setTriggerApi(true)
+
          
     }
     const checkForPasswordMatch = () =>{

@@ -12,17 +12,7 @@ module.exports = {
                 }
                 const respone = await User.create(createUser);
                 if(respone){
-                    const tokenPayload = {
-                        id:respone._id,
-                        firstName,lastName,email,cnic,contactNo,address
-                    }
-                    const generateToken = JWT.sign({
-                        data:tokenPayload,
-                        // privateKey:{algorithm:process.env.ENCRYPTED_ALGO}
-                    },
-                        process.env.SECRET_KEY,
-                        {expiresIn:process.env.EXPIRY})
-                    return res.status(200).send({status:true,message:"User Created Successfuly",token:generateToken});
+                    return res.status(200).send({status:true,message:"User Created Successfuly"});
                 }
                 
             }
@@ -30,7 +20,30 @@ module.exports = {
                 return res.status(500).send({status:false,message:"Something Went Wrong",error:error});
             }
     },
-
+    async login(req,res){
+        try {
+            const {email,password} = req.body;
+            console.log(req.body)
+            const response = await User.findOne({
+               $and:[{
+                email,
+                password
+               }]
+            },["_id","firstName","lastName","cnic","email","contactNo"]) 
+            const tokenPayload = response
+            const generateToken = JWT.sign({
+                data:tokenPayload,
+            },
+                process.env.SECRET_KEY,
+                {expiresIn:process.env.EXPIRY})
+            if(response) return res.status(200).send({status:true,message:"Login Successful",token:generateToken});
+            else return res.status(401).send({status:false,message:"Invalid Credentials"})
+        } catch (error) {
+            return res.status(500).send({status:false,message:"Something went wrong",error})
+        }
+      
+            
+    },
     async VerifyUser(req,res){
         try {
             const {authorization} = req.headers
