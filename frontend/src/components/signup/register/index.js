@@ -1,7 +1,8 @@
-import React,{useEffect, useRef,useState} from "react"
+import React,{ useRef,useState} from "react"
 import {FormHolder,FieldHolder,Input,TextArea,Button} from "../style"
 import UseFetch from "../../../Hooks/useFetch"
 import { API_URL } from "../../../constants"
+
 const Register = () =>{
     const firstName = useRef("");
     const lastName = useRef("");
@@ -23,6 +24,8 @@ const Register = () =>{
 
     const {response,loading,error} = UseFetch(requestData,triggerApi)
     console.log(response,loading,error)
+
+
 
          
          

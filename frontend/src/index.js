@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import "./index.css"
+import StoreProvider from "./store/index"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <StoreProvider>
     <App />
-  </React.StrictMode>
+  </StoreProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
