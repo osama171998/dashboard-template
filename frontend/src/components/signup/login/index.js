@@ -2,13 +2,14 @@ import {useRef,useContext} from "react"
 import {Input,FieldHolder, FormHolder, Button} from "../style"
 import { API_URL } from "../../../constants"
 import {StoreContext} from "../../../store/index"
+import {useNavigate} from "react-router-dom"
 const Login = () =>{
+    const navigate = useNavigate();
     const email = useRef("")
     const password = useRef("")
 
     const {state,dispatch} = useContext(StoreContext)
-   
-    
+
     
 
 
@@ -27,15 +28,25 @@ const Login = () =>{
             },
             body:JSON.stringify(loginPayload)
         }
-        dispatch({
+  
+       await dispatch({
             type:"API_REQUEST",
             requestData
         })
-        // await dispatch({type:"TEST1"})
-        return true
+
+
       
     }
-    console.log(state)
+
+
+    state.result&&state.result.then(res=>{
+        if(res.status){
+            dispatch({type:"STORE_TOKEN",token:res.token})
+            navigate("/dashboard")
+        }
+        alert(res.message)
+        
+    })
     return <FormHolder onSubmit={handleLoginRequest}>
        
         <FieldHolder>
@@ -47,6 +58,8 @@ const Login = () =>{
         <FieldHolder>
             <Button name="button" value="Button" width={"max-content"}>Login</Button>
         </FieldHolder>
+    {/* {apiResult&&console.log(apiResult)} */}
+   
     </FormHolder>
 }
 export default Login

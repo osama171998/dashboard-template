@@ -1,27 +1,24 @@
-export const ReducersStore =  async (state,action) =>{
+export const ReducersStore = (state, action) => {
     switch (action.type) {
         case "API_REQUEST":
-        
-            const API_CALL = async () =>{
-                const {route,method,headers,body} = action.requestData
-                    const response = await fetch (route,{
-                        method,headers,body
-                    })
-                    const result = await response.json();
-                    console.log("inner",result)
-                    return result
+            const API_CALL = async () => {
+                const { route, method, headers, body } = action.requestData
+                const respone = await fetch(route, {
+                    method, headers, body
+                })
+                const data = await respone.json()
+                return data
+               
+
             }
-            const data = await API_CALL();
-            console.log("outer")
-            return {...state,data}
-        case "TEST1":
-            return {...state,test1:true}
-        case "TEST2":
-            return {...state,test2:true}
-       
-          
-        
+            const result = API_CALL()
+            return {...state,result}
+        case "STORE_TOKEN":
+            delete state.result
+            const token = action.token
+            return { ...state, token }
+
         default:
             return state;
     }
-}
+}   
